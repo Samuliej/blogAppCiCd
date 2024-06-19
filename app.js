@@ -34,7 +34,14 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/testing', testingRouter)
 
+// Golden line of code that made all better
+app.use(express.static('build'))
+
 app.use(middelware.unknownEndpoint)
 app.use(middelware.errorHandler)
+
+app.get('/health', (req, res) => {
+  res.send('ok')
+})
 
 module.exports = app
