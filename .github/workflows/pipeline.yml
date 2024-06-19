@@ -35,6 +35,9 @@ jobs:
           mongodb-replica-set: test-rs
           mongodb-port: 42069
 
+      - name: Set MongoDB connection string
+        run: echo "TEST_MONGODB_URI=mongodb://localhost:42069/test" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: npm install
       - name: Builds
