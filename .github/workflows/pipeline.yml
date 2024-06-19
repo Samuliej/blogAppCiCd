@@ -66,10 +66,15 @@ jobs:
         env:
           CI: true
 
+      - name: start server
+        run: npm run start:server &
+
+      - name: start client
+        run: npm run start &
+
       - name: cypress e2e tests
         uses: cypress-io/github-action@v5
         with:
           command: npm run cypress:run
-          start: npm run start:server & && npm run start &
           wait-on: http://localhost:3000
 
