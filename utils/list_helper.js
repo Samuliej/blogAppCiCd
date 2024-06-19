@@ -24,7 +24,7 @@ const favoriteBlog = (blogs) => {
     author: favBlog.author,
     likes: mostLikes
   }
-    
+
 }
 
 const mostBlogs = (blogs) => {
@@ -45,6 +45,7 @@ const mostBlogs = (blogs) => {
         blogs: 0 })
     })
 
+    let author
     blogs.forEach(blog => {
       author = bloggers.find(blogger => blogger.author === blog.author)
       author.blogs = author.blogs + 1
@@ -85,6 +86,7 @@ const mostLikes = (blogs) => {
         likes: 0 })
     })
 
+    let author
     blogs.forEach(blog => {
       author = bloggers.find(blogger => blogger.author === blog.author)
       author.likes = author.likes + blog.likes
@@ -107,7 +109,7 @@ const mostLikes = (blogs) => {
     likes: blogs[0].likes
   }
 }
-  
+
 module.exports = {
   dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }

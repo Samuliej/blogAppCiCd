@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken')
 describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
-  
+
     const blogObjects = helper.initialBlogs
       .map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
@@ -26,21 +26,21 @@ describe('when there is initially some blogs saved', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
-  
-  
+
+
   test('there are two blogs currently', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(2)
   })
-  
+
   test('objects have an field named "id"', async () => {
     const response = await api.get('/api/blogs')
     const blogArr = response.body
-    blogArr.forEach(blog => { 
+    blogArr.forEach(blog => {
       expect(blog.id).toBeDefined()
     })
   })
-  
+
 })
 
 describe('adding a blog', () => {
@@ -69,22 +69,22 @@ describe('adding a blog', () => {
       'likes': 1,
       'user': currentUser._id
     }
-  
+
     await api
       .post('/api/blogs')
       .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-  
+
     const response = await api.get('/api/blogs')
-  
+
     const title = response.body.map(r => r.title)
-  
+
     expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
     expect(title).toContain('TestiBlogi testien kautta')
   })
-  
+
   test('if an blog object is made without an likes field, it is set to zero', async () => {
     const currentUser = await User.findOne({ username: 'samppa' })
     const token = helper.generateToken(currentUser)
@@ -95,55 +95,55 @@ describe('adding a blog', () => {
       'url': 'https://www.eiolevielakaanolemassa.fi',
       'user': currentUser._id
     }
-  
+
     await api
       .post('/api/blogs')
       .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-  
+
     const response = await api.get('/api/blogs')
     const addedBlog = response.body[response.body.length-1]
     expect(addedBlog.likes).toBe(0)
   })
-  
+
   test('if blog is missing the title or the url field, server responds 400 Bad Request', async () => {
     let newBlog = {
       'author': 'Samppa',
       'url': 'https://www.eiolevielakaanolemassa.fi'
     }
-  
+
     await api
       .post('/api/blogs')
       .send(newBlog)
       .expect(400)
-  
+
     newBlog = {
       'author': 'Samppa',
       'title': 'Testi'
     }
-  
+
     await api
       .post('/api/blogs')
       .send(newBlog)
       .expect(400)
-  }) 
+  })
 })
 
 describe('deleting a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
-    
+
     const user = await User.create({
       username: 'testuser',
       password: 'testpassword',
       name: 'Test User'
     })
 
-    
+
     const token = helper.generateToken(user)
 
-    
+
     const newBlog = new Blog({
       title: 'Test Blog',
       author: 'Test Author',
@@ -158,7 +158,7 @@ describe('deleting a blog', () => {
       .delete(`/api/blogs/${newBlog.id}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204)
-    
+
     const blogsAtEnd = await helper.blogsInDb()
 
     const titles = blogsAtEnd.map(b => b.title)
@@ -173,7 +173,7 @@ describe('updating a blog', () => {
     const blogToModify = blogsAtStart[0]
     const originalBlogTitle = blogToModify.title
     console.log(blogToModify)
-    
+
     const blog = {
       'title': 'muokattu blogi testien kautta',
       'author': 'Samppa',
@@ -263,7 +263,7 @@ describe('when there is initially one user at db', () => {
 
     expect(result.body.error).toContain('User validation failed: username: Path ' +
       '`username` ' + '(`' + newUser.username + '`)' + ' is shorter than the minimum allowed length (3).')
-    
+
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
@@ -284,13 +284,13 @@ describe('when there is initially one user at db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('username and password should be longer than 3 characters')
-    
+
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
 })
 
-  
+
 afterAll(() => {
   mongoose.connection.close()
 })

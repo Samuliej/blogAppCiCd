@@ -21,12 +21,23 @@ jobs:
 
 
   deployment_pipeline:
+    strategy:
+      matrix:
+        mongodb-version: ['6.0', '7.0', '8.0']
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '16'
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.11.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-replica-set: test-rs
+          mongodb-port: 42069
+
       - name: Install dependencies
         run: npm install
       - name: Builds
@@ -34,6 +45,10 @@ jobs:
 
       - name: Run server tests
         run: npm run test:server
+        env:
+          CI: true
 
       - name: Run client tests
         run: npm run test:client
+        env:
+          CI: true
