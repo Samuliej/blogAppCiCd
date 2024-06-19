@@ -35,10 +35,11 @@ jobs:
           mongodb-replica-set: test-rs
           mongodb-port: 42069
 
-      - name: Set environment variables
-        run: |
-          echo "MONGODB_URI=mongodb://localhost:42069/test" >> $GITHUB_ENV
-          echo "SECRET=${{ secrets.SECRET }}" >> $GITHUB_ENV
+      - name: Set MongoDB connection string
+        run: echo "TEST_MONGODB_URI=mongodb://localhost:42069/test" >> $GITHUB_ENV
+
+      - name: Set secret
+        run: echo "SECRET=${{ secrets.SECRET }}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: npm install
