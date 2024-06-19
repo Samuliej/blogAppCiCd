@@ -8,6 +8,7 @@
     "start:server": "cross-env NODE_ENV=production node index.js",
     "start:both": "concurrently \"npm run start\" \"npm run start:server\"",
     "serve": "serve -s build",
+    "start:ci": "concurrently --kill-others \"npm run start:server\" \"npm run start\" \"wait-on http://localhost:3003 http://localhost:3000\"",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test:server": "cross-env NODE_ENV=test jest ./tests --verbose --runInBand --forceExit",
     "test:client": "react-scripts test src/components --watchAll=false",
@@ -45,6 +46,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "babel-loader": "^9.1.3",
+    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "cypress": "^12.14.0",
@@ -55,6 +57,7 @@
     "start-server-and-test": "^2.0.4",
     "style-loader": "^4.0.0",
     "supertest": "^6.3.3",
+    "wait-on": "^7.2.0",
     "webpack": "^5.92.0",
     "webpack-cli": "^5.1.4"
   },
