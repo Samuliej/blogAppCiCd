@@ -26,4 +26,6 @@ yarn-error.log*
 # cypress test videos
 cypress/videos
 
+dist
+
 

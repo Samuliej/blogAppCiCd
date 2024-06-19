@@ -4,3 +4,4 @@ build
 tests
 utils
 cypress.config.js
+dist
