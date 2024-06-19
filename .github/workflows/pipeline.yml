@@ -21,6 +21,7 @@ jobs:
 
 
   deployment_pipeline:
+    needs: [check_style]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -55,3 +56,11 @@ jobs:
         run: npm run test:client
         env:
           CI: true
+
+      - name: cypress e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run cypress:run
+          start: npm run start:server && npm run start
+          wait-on: http://localhost:3000
+

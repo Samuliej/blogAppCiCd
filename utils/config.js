@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-let PORT = process.env.PORT
+let PORT = process.env.BACKEND_PORT
 
 let MONGODB_URI = process.env.NODE_ENV === 'test'
   ? process.env.TEST_MONGODB_URI
