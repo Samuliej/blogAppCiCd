@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const healthRouter = require('./controllers/health')
 const middelware = require('./utils/middleware')
 const testingRouter = require('./controllers/testing')
 const logger = require('./utils/logger')
@@ -33,15 +34,13 @@ app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/testing', testingRouter)
+app.use('/api/health', healthRouter)
+
 
 // Golden line of code that made all better
 app.use(express.static('build'))
 
 app.use(middelware.unknownEndpoint)
 app.use(middelware.errorHandler)
-
-app.get('/health', (req, res) => {
-  res.send('ok')
-})
 
 module.exports = app
