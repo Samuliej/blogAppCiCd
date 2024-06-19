@@ -28,7 +28,7 @@ primary_region = 'arn'
   cpus = 1
 
 [[services]]
-  internal_port = 8080
+  internal_port = 3003
   protocol = "tcp"
 
   [services.concurrency]
