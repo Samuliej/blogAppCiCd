@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
 jobs:
 
   check_style:
@@ -20,7 +24,7 @@ jobs:
         run: npm run eslint
 
 
-  deployment_pipeline:
+  run_tests:
     needs: [check_style]
     runs-on: ubuntu-20.04
     steps:
@@ -76,6 +80,19 @@ jobs:
           start: npm run start
           wait-on: http://localhost:3000
 
+
+  deployment_pipeline:
+    needs: [run_tests]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: npm install
+      - name: Builds
+        run: npm run build
 
       - name: Deploy the app to Fly.io
         if: ${{ github.event_name == 'push' && !contains(join(fromJSON(toJson(github.event.commits.*.message)), ' '), '#skip') }}
