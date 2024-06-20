@@ -36,7 +36,6 @@ app.use('/api/login', loginRouter)
 app.use('/api/testing', testingRouter)
 app.use('/api/health', healthRouter)
 
-// asd
 // Golden line of code that made all better
 app.use(express.static('build'))
 
